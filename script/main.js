@@ -42,7 +42,7 @@ const loadConfigFromUrl = async () => {
   }
 
   window.__valentineConfigId = id;
-  // Name is fixed as "Sakshi!" in index.html — not overridden by config
+  // Name is fixed as "Di!" in index.html — not overridden by config
   const openingEl = document.getElementById("greetingText");
   if (openingEl && config.openingLine) openingEl.innerText = config.openingLine;
   if (config.greetingText) {
@@ -449,7 +449,7 @@ const fetchData = () => {
     .then((data) => {
       Object.keys(data).map((customData) => {
         if (data[customData] !== "") {
-          // Skip name - fixed as "Sakshi!" in index.html
+          // Skip name - fixed as "Di!" in index.html
           if (customData === "name") {
             return;
           } else if (customData === "imagePath") {
