@@ -731,18 +731,25 @@ function runAway() {
       : (isMobile ? 200 : 350)  // Far during normal runaway
 
     const yesRect = yesBtn.getBoundingClientRect()
-    // ALWAYS avoid Yes button with significant padding - this is MANDATORY
-    const yesPad = isMobile ? 20 : 30
+    // ALWAYS avoid Yes button: never let No come over or under Yes — use large exclusion zone
+    const yesPad = isMobile ? 50 : 80
     const avoidLeft = yesRect.left - yesPad
     const avoidRight = yesRect.right + yesPad
     const avoidTop = yesRect.top - yesPad
     const avoidBottom = yesRect.bottom + yesPad
+    // Minimum center-to-center distance so No is always in a different position from Yes
+    const yesCenterX = yesRect.left + yesRect.width / 2
+    const yesCenterY = yesRect.top + yesRect.height / 2
+    const MIN_DISTANCE_FROM_YES = isMobile ? 180 : 220
 
     // If chase is active, get buddy position to avoid
     // Initial chase: large avoidance radius (careful movement)
     // After 10+ runaway attempts: much smaller radius (riskier, can get close by chance)
     let buddyLeft = -1000, buddyRight = -1000, buddyTop = -1000, buddyBottom = -1000
     let BUDDY_AVOID_RADIUS
+
+    // After more tries during chase: random chance to let No button land near buddy (riskier, more fun)
+    const allowNearBuddyThisTime = chaseActive && takerPosition && runawayCount >= 12 && Math.random() < 0.28
 
     if (chaseActive && takerPosition) {
         // Start with large avoidance, reduce after significant attempts
@@ -770,8 +777,38 @@ function runAway() {
     let bestX = minX
     let bestY = maxY
 
+    // On random chance after more tries: sometimes intentionally move No button near buddy (risky move)
+    if (allowNearBuddyThisTime && takerPosition) {
+        const buddyCenterX = takerPosition.x + 25
+        const buddyCenterY = takerPosition.y + 50
+        const NEAR_BUDDY_RADIUS = isMobile ? 70 : 95
+        for (let t = 0; t < 18; t++) {
+            const angle = Math.random() * Math.PI * 2
+            const dist = 30 + Math.random() * (NEAR_BUDDY_RADIUS - 30)
+            const x = Math.round(buddyCenterX - btnW / 2 + Math.cos(angle) * dist)
+            const y = Math.round(buddyCenterY - btnH / 2 + Math.sin(angle) * dist)
+            const nx = Math.max(minX, Math.min(x, maxX))
+            const ny = Math.max(minY, Math.min(y, maxY))
+            const noRight = nx + btnW
+            const noBottom = ny + btnH
+            const overlapsYes = (nx < avoidRight && noRight > avoidLeft) && (ny < avoidBottom && noBottom > avoidTop)
+            const noCx = nx + btnW / 2
+            const noCy = ny + btnH / 2
+            const distFromYes = Math.sqrt(Math.pow(noCx - yesCenterX, 2) + Math.pow(noCy - yesCenterY, 2))
+            const farFromYes = distFromYes >= MIN_DISTANCE_FROM_YES
+            const distanceFromCurrent = Math.sqrt(Math.pow(nx - currentX, 2) + Math.pow(ny - currentY, 2))
+            const farEnough = distanceFromCurrent >= MIN_MOVE_DISTANCE
+            if (!overlapsYes && farFromYes && farEnough) {
+                randomX = nx
+                randomY = ny
+                found = true
+                break
+            }
+        }
+    }
+
     // Try many times and pick the FARTHEST valid position (not just first valid)
-    for (let tries = 0; tries < 60; tries++) {
+    if (!found) for (let tries = 0; tries < 60; tries++) {
         let x, y
 
         // 50% chance to prefer edge/corner positions for more dramatic movement
@@ -812,7 +849,15 @@ function runAway() {
         const overlapsYes = (x < avoidRight && noRight > avoidLeft) &&
                            (y < avoidBottom && noBottom > avoidTop)
 
-        // Check if too close to buddy (avoidance reduces over time, can get close by chance later)
+        // No button must be in a different position: minimum distance from Yes center
+        const noCenterX = x + btnW / 2
+        const noCenterY = y + btnH / 2
+        const distFromYes = Math.sqrt(
+            Math.pow(noCenterX - yesCenterX, 2) + Math.pow(noCenterY - yesCenterY, 2)
+        )
+        const farFromYes = distFromYes >= MIN_DISTANCE_FROM_YES
+
+        // Check if too close to buddy (avoidance reduces over time; when allowNearBuddyThisTime we allow it)
         const nearBuddy = chaseActive && takerPosition &&
                          (x < buddyRight && noRight > buddyLeft) &&
                          (y < buddyBottom && noBottom > buddyTop)
@@ -820,8 +865,9 @@ function runAway() {
         // Ensure button moves far enough away from current position
         const farEnough = distanceFromCurrent >= MIN_MOVE_DISTANCE
 
-        // MUST satisfy ALL conditions: never overlap Yes, respect buddy radius, move far enough
-        if (!overlapsYes && !nearBuddy && farEnough) {
+        // MUST satisfy: never overlap Yes, min distance from Yes, move far enough; allow near buddy only on random chance after more tries
+        const buddyOk = allowNearBuddyThisTime || !nearBuddy
+        if (!overlapsYes && buddyOk && farEnough && farFromYes) {
             if (distanceFromCurrent > bestDistance) {
                 bestDistance = distanceFromCurrent
                 bestX = x
@@ -831,8 +877,8 @@ function runAway() {
         }
     }
 
-    // Use the farthest position found
-    if (found) {
+    // Use the farthest position found (or keep near-buddy position if we chose one)
+    if (found && bestDistance > 0) {
         randomX = bestX
         randomY = bestY
     }
@@ -874,25 +920,30 @@ function runAway() {
             }
         }
 
-        // CRITICAL: Final check - ensure fallback position doesn't overlap Yes button
+        // CRITICAL: Final check - ensure fallback position doesn't overlap Yes button and is far enough from Yes
         const finalNoRight = randomX + btnW
         const finalNoBottom = randomY + btnH
         const finalOverlapsYes = (randomX < avoidRight && finalNoRight > avoidLeft) &&
                                  (randomY < avoidBottom && finalNoBottom > avoidTop)
+        const finalNoCenterX = randomX + btnW / 2
+        const finalNoCenterY = randomY + btnH / 2
+        const finalDistFromYes = Math.sqrt(
+            Math.pow(finalNoCenterX - yesCenterX, 2) + Math.pow(finalNoCenterY - yesCenterY, 2)
+        )
+        const finalTooCloseToYes = finalDistFromYes < MIN_DISTANCE_FROM_YES
 
-        // If fallback overlaps Yes, shift it away from Yes button
-        if (finalOverlapsYes) {
-            // Determine which direction to shift based on Yes button position
-            const yesCenterX = (avoidLeft + avoidRight) / 2
-            const yesCenterY = (avoidTop + avoidBottom) / 2
-
-            // Shift to farthest edge from Yes button
-            if (randomX < yesCenterX) {
-                // Button is left of Yes, move further left
-                randomX = Math.max(minX, avoidLeft - btnW - 20)
+        // If fallback overlaps Yes or is too close, shift No to a safe position away from Yes
+        if (finalOverlapsYes || finalTooCloseToYes) {
+            // Place No in the corner/edge farthest from Yes center so it never sits over or under Yes
+            if (yesCenterX > window.innerWidth / 2) {
+                randomX = Math.max(minX, minX + 20)
             } else {
-                // Button is right of Yes, move further right
-                randomX = Math.min(maxX, avoidRight + 20)
+                randomX = Math.min(maxX - btnW - 20, maxX - btnW)
+            }
+            if (yesCenterY > window.innerHeight / 2) {
+                randomY = Math.max(minY, minY + 20)
+            } else {
+                randomY = Math.min(maxY - btnH - 20, maxY - btnH)
             }
         }
     }
