@@ -1,0 +1,1005 @@
+/* v-day styles (scoped for merged page) — adapt to window resize on desktop */
+#vday-app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100vw;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+    box-sizing: border-box;
+    background-color: #FFE4E8;
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background-image:
+        radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #fff0f3 0%, transparent 60%);
+}
+
+#vday-app * {
+    box-sizing: border-box;
+}
+
+/* Floating hearts background */
+#vday-app .hearts-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+#vday-app .hearts-bg::before,
+#vday-app .hearts-bg::after {
+    content: '💕 💗 💖 💝 💓';
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    animation: vdayFloatHearts 12s linear infinite;
+    white-space: nowrap;
+    top: 100%;
+    left: 10%;
+}
+
+#vday-app .hearts-bg::after {
+    animation-delay: 6s;
+    left: 60%;
+    content: '💗 💕 💓 💖 💝';
+}
+
+@keyframes vdayFloatHearts {
+    from { transform: translateY(0); opacity: 0.15; }
+    to { transform: translateY(-110vh); opacity: 0; }
+}
+
+#vday-app .vday-container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: clamp(12px, 4vmin, 40px) clamp(12px, 5vw, 20px);
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+}
+
+#vday-app h1 {
+    font-size: clamp(1.2rem, 5vmin, 2.4rem);
+    color: #d63384;
+    font-weight: 900;
+    margin-bottom: clamp(8px, 2.5vmin, 20px);
+    text-shadow: 2px 2px 0px rgba(214, 51, 132, 0.2);
+    animation: vdayWiggle 2s ease-in-out infinite;
+    padding: 0 2vw;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+@keyframes vdayWiggle {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+}
+
+#vday-app .gif-container {
+    margin: clamp(12px, 3vmin, 20px) auto;
+    display: flex;
+    justify-content: center;
+}
+
+#vday-app #cat-gif {
+    width: min(200px, 45vmin);
+    height: min(200px, 45vmin);
+    max-width: 90vw;
+    max-height: 40vmin;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+    transition: opacity 0.3s ease;
+}
+
+#vday-app .buttons {
+    display: flex;
+    gap: clamp(10px, 3vmin, 20px);
+    justify-content: center;
+    align-items: center;
+    margin-top: clamp(16px, 4vmin, 30px);
+    flex-wrap: nowrap;
+    padding: 0 4vw;
+    width: 100%;
+    position: relative;
+}
+
+#vday-app #yes-btn {
+    position: relative;
+    z-index: 50;
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    font-size: clamp(1.1rem, 4vmin, 1.6rem);
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    padding: clamp(12px, 3vmin, 18px) clamp(24px, 8vmin, 45px);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, font-size 0.3s, padding 0.3s;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.45);
+    letter-spacing: 1px;
+    box-sizing: border-box;
+    max-width: min(320px, calc(100vw - 24px));
+    min-width: min(120px, 28vw);
+    min-height: 44px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    vertical-align: middle;
+}
+
+#vday-app #yes-btn:hover {
+    transform: scale(1.06) translateY(-2px);
+    box-shadow: 0 10px 28px rgba(76, 175, 80, 0.55);
+}
+
+#vday-app #yes-btn:active {
+    transform: scale(0.98);
+}
+
+#vday-app #no-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: clamp(0.75rem, 2.5vmin, 0.9rem);
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    padding: clamp(10px, 2.5vmin, 14px) clamp(14px, 3.5vmin, 18px);
+    min-width: min(130px, 32vw);
+    max-width: min(300px, 88vw);
+    min-height: clamp(44px, 11vmin, 50px);
+    line-height: 1.35;
+    white-space: pre-line;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(231, 76, 60, 0.4);
+    text-align: center;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    word-break: keep-all;
+    overflow-wrap: normal;
+    flex-shrink: 0;
+    flex-grow: 0;
+    transition: font-size 0.3s, padding 0.3s;
+}
+
+#vday-app #no-btn {
+    transition: background 0.2s, left 0.6s cubic-bezier(0.33, 1, 0.68, 1), top 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+#vday-app #no-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+#vday-app #tease-toast {
+    margin-top: 14px;
+    font-size: clamp(0.9rem, 2.8vmin, 1rem);
+    color: #d63384;
+    font-weight: 700;
+    font-style: italic;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    min-height: 1.5rem;
+    line-height: 1.4;
+    padding: 0 4vw;
+    text-align: center;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+#vday-app #tease-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#vday-app #no-btn.no-btn-last-chance {
+    padding: 14px 20px;
+    min-width: 200px;
+    max-width: 320px;
+    font-size: 0.95rem;
+    animation: no-btn-glow 0.8s ease-in-out infinite alternate, no-btn-pulse 1.6s ease-in-out infinite;
+    box-shadow:
+        0 0 30px rgba(255, 69, 0, 0.95),
+        0 0 60px rgba(255, 140, 0, 0.7),
+        0 0 90px rgba(255, 215, 0, 0.5),
+        0 4px 20px rgba(231, 76, 60, 0.8),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    border: 3px solid rgba(255, 215, 0, 1);
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.3);
+    position: relative;
+    z-index: 50;
+    transform: scale(1.05);
+}
+
+#vday-app #no-btn.no-btn-last-chance::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: warning-beacon 2s ease-in-out infinite;
+    z-index: -1;
+    pointer-events: none;
+}
+
+@keyframes warning-beacon {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.8;
+    }
+}
+
+@keyframes no-btn-glow {
+    from {
+        box-shadow:
+            0 0 25px rgba(255, 69, 0, 0.9),
+            0 0 50px rgba(255, 140, 0, 0.6),
+            0 0 75px rgba(255, 215, 0, 0.4),
+            0 4px 18px rgba(231, 76, 60, 0.7);
+        border-color: rgba(255, 200, 0, 0.9);
+    }
+    to {
+        box-shadow:
+            0 0 40px rgba(255, 69, 0, 1),
+            0 0 80px rgba(255, 140, 0, 0.8),
+            0 0 120px rgba(255, 215, 0, 0.6),
+            0 4px 24px rgba(231, 76, 60, 0.9);
+        border-color: rgba(255, 235, 120, 1);
+    }
+}
+
+@keyframes no-btn-pulse {
+    0%, 100% {
+        transform: scale(1.05);
+    }
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+@keyframes wiggleNo {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    15% { transform: translateX(-8px) rotate(-5deg); }
+    30% { transform: translateX(8px) rotate(5deg); }
+    45% { transform: translateX(-8px) rotate(-5deg); }
+    60% { transform: translateX(8px) rotate(5deg); }
+    75% { transform: translateX(-4px) rotate(-2deg); }
+    90% { transform: translateX(4px) rotate(2deg); }
+}
+
+#vday-app #music-toggle,
+#yes-app #music-toggle {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    background: rgb(255, 255, 255);
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s;
+    z-index: 100;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+#vday-app #music-toggle:hover,
+#yes-app #music-toggle:hover {
+    transform: scale(1.08);
+}
+
+/* v-day: tablet — fine-tune if needed (base is fluid) */
+@media screen and (max-width: 768px) {
+    #vday-app #no-btn.no-btn-last-chance {
+        box-shadow:
+            0 0 28px rgba(255, 69, 0, 0.98),
+            0 0 56px rgba(255, 140, 0, 0.75),
+            0 0 84px rgba(255, 215, 0, 0.55),
+            0 4px 18px rgba(231, 76, 60, 0.85);
+    }
+
+    #vday-app .buttons {
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(50px + env(safe-area-inset-bottom, 0));
+        right: calc(10px + env(safe-area-inset-right, 0));
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(48px + env(safe-area-inset-bottom, 0));
+        right: calc(8px + env(safe-area-inset-right, 0));
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Mobile portrait specific - even smaller to avoid footer text */
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(50px + env(safe-area-inset-bottom, 0));
+        right: calc(6px + env(safe-area-inset-right, 0));
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+}
+
+/* iPhone specific (SE, 12, 13, 14, 15 Pro Max, etc.) */
+@media screen and (orientation: portrait) and (max-width: 430px) and (max-height: 932px) {
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(52px + env(safe-area-inset-bottom, 0));
+        right: 6px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Android phones (various sizes) */
+@media screen and (orientation: portrait) and (min-device-pixel-ratio: 2) and (max-width: 450px) {
+    #vday-app #music-toggle,
+    #yes-app #music-toggle {
+        bottom: calc(50px + env(safe-area-inset-bottom, 0));
+        right: 6px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Safari iOS specific - ensure crisp rendering */
+@supports (-webkit-touch-callout: none) {
+    @media screen and (orientation: portrait) and (max-width: 500px) {
+        #vday-app #music-toggle,
+        #yes-app #music-toggle,
+        body.yes-page #music-toggle {
+            transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+    }
+}
+
+/* Chrome/Android specific - ensure crisp rendering */
+@supports not (-webkit-touch-callout: none) {
+    @media screen and (orientation: portrait) and (max-width: 500px) {
+        #vday-app #music-toggle,
+        #yes-app #music-toggle,
+        body.yes-page #music-toggle {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+    }
+}
+
+/* v-day: mobile portrait — Green (Yes) button does NOT grow like landscape; No has room to run */
+@media screen and (orientation: portrait) and (max-width: 768px) {
+    #vday-app .buttons {
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        gap: clamp(10px, 2.5vmin, 16px);
+        padding: 0 max(12px, 3vw);
+    }
+    #vday-app #yes-btn {
+        width: auto !important;
+        max-width: min(165px, 50vw) !important;
+        font-size: clamp(0.95rem, 3.2vmin, 1.15rem);
+        padding: clamp(10px, 2.5vmin, 12px) clamp(16px, 4.5vmin, 24px);
+        min-height: 44px;
+    }
+    #vday-app #no-btn {
+        width: auto;
+        max-width: min(160px, 45vw);
+        min-width: min(100px, 28vw);
+        font-size: clamp(0.7rem, 2.3vmin, 0.85rem);
+        padding: clamp(10px, 2.2vmin, 12px) clamp(14px, 3.2vmin, 18px);
+        min-height: clamp(48px, 12vmin, 56px);
+        line-height: 1.4;
+    }
+}
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    #vday-app #yes-btn {
+        max-width: min(150px, 46vw) !important;
+        font-size: clamp(0.9rem, 3vmin, 1.1rem);
+        padding: clamp(10px, 2.2vmin, 12px) clamp(14px, 4vmin, 20px);
+    }
+    #vday-app #no-btn {
+        max-width: min(150px, 42vw);
+        min-width: min(95px, 28vw);
+        font-size: clamp(0.75rem, 2.4vmin, 0.88rem);
+        padding: clamp(10px, 2.3vmin, 13px) clamp(12px, 3vmin, 16px);
+        min-height: clamp(50px, 12vmin, 60px);
+        line-height: 1.5;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+}
+@media screen and (orientation: portrait) and (max-width: 360px) {
+    #vday-app #yes-btn {
+        max-width: min(135px, 44vw) !important;
+        font-size: clamp(0.88rem, 2.8vmin, 1.05rem);
+        padding: clamp(10px, 2vmin, 12px) clamp(12px, 3.5vmin, 18px);
+    }
+    #vday-app #no-btn {
+        max-width: min(130px, 38vw);
+        min-width: min(85px, 26vw);
+        font-size: clamp(0.65rem, 2.1vmin, 0.78rem);
+        padding: clamp(9px, 2.2vmin, 12px) clamp(10px, 2.8vmin, 14px);
+        min-height: clamp(48px, 12vmin, 58px);
+        line-height: 1.5;
+    }
+}
+
+/* v-day: mobile (any orientation) — keep on screen */
+@media screen and (max-width: 500px) {
+    #vday-app .vday-container {
+        padding: clamp(16px, 5vmin, 28px) clamp(12px, 5vw, 16px);
+    }
+
+    #vday-app #no-btn.no-btn-last-chance {
+        min-width: 180px;
+        max-width: 90vw;
+        font-size: clamp(0.85rem, 2.5vmin, 0.95rem);
+        box-shadow:
+            0 0 25px rgba(255, 69, 0, 1),
+            0 0 50px rgba(255, 140, 0, 0.8),
+            0 0 75px rgba(255, 215, 0, 0.6),
+            0 4px 16px rgba(231, 76, 60, 0.8);
+    }
+}
+    #vday-app h1 {
+        font-size: clamp(1.1rem, 4.5vmin, 1.6rem);
+        padding: 0 4vw;
+    }
+    #vday-app #cat-gif {
+        width: min(140px, 38vmin);
+        height: min(140px, 38vmin);
+        max-height: 35vmin;
+    }
+    #vday-app .buttons {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: clamp(8px, 2vmin, 12px);
+        padding: 0 2vw;
+    }
+    #vday-app #yes-btn {
+        font-size: clamp(1rem, 3.5vmin, 1.25rem);
+        padding: clamp(12px, 3vmin, 16px) clamp(20px, 6vmin, 32px);
+    }
+    #vday-app #no-btn {
+        font-size: clamp(0.75rem, 2.2vmin, 0.85rem);
+        min-height: clamp(38px, 9vmin, 44px);
+    }
+    #vday-app #tease-toast {
+        font-size: clamp(0.8rem, 2.2vmin, 0.9rem);
+        line-height: 1.5;
+        padding: 0 6vw;
+    }
+    #vday-app .no-taken-msg {
+        font-size: clamp(0.85rem, 2.2vmin, 1rem);
+        line-height: 1.5;
+        padding: 0 6vw;
+    }
+}
+
+/* v-day: mobile landscape — use horizontal space, compact vertical */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #vday-app .vday-container {
+        padding: clamp(8px, 2vmin, 20px) clamp(12px, 4vw, 24px);
+    }
+    #vday-app h1 {
+        font-size: clamp(1.15rem, 4vmin, 1.6rem);
+        margin-bottom: clamp(6px, 1.5vmin, 12px);
+    }
+    #vday-app #cat-gif {
+        width: min(140px, 35vmin);
+        height: min(140px, 35vmin);
+        max-height: 28vh;
+    }
+    #vday-app .buttons {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: clamp(8px, 2vmin, 14px);
+        margin-top: clamp(10px, 2vmin, 20px);
+    }
+    #vday-app #yes-btn {
+        font-size: clamp(1rem, 3vmin, 1.25rem);
+        padding: clamp(10px, 2vmin, 14px) clamp(18px, 5vmin, 28px);
+    }
+    #vday-app #no-btn {
+        font-size: clamp(0.75rem, 2.2vmin, 0.85rem);
+        min-height: clamp(36px, 8vmin, 40px);
+    }
+}
+
+/* v-day: mobile portrait — comfortable vertical flow */
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    #vday-app .vday-container {
+        padding: clamp(20px, 6vmin, 32px) clamp(12px, 4vw, 20px);
+    }
+}
+
+/* No button "taken away" — Peep from door game (img) or fallback stick figure */
+#vday-app .no-taken-taker {
+    position: fixed;
+    z-index: 45;
+    width: 50px;
+    height: 100px;
+    pointer-events: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+/* Peep image (door game character) */
+#vday-app .no-taken-taker-peep .no-taken-taker-peep-img {
+    display: block;
+    width: 50px;
+    height: 100px;
+    object-fit: contain;
+}
+#vday-app .no-taken-taker.no-taken-taker-peep.no-taken-taker-chase .no-taken-taker-peep-img,
+#vday-app .no-taken-taker.no-taken-taker-peep.no-taken-taker-run .no-taken-taker-peep-img {
+    animation: peep-bob 0.35s ease-in-out infinite;
+}
+#vday-app .no-taken-taker.no-taken-taker-peep.no-taken-taker-grab .no-taken-taker-peep-img {
+    animation: peep-grab 0.5s ease-in-out;
+}
+@keyframes peep-bob {
+    /* Match door game bouncy cycle: [0, 0.25, 1, 0.9, 0, 0, 0.25, 1, 0.9, 0] */
+    0%, 100% { transform: translateY(0); }
+    10%      { transform: translateY(-1.5px); }
+    20%      { transform: translateY(-6px); }
+    30%      { transform: translateY(-5px); }
+    40%, 50% { transform: translateY(0); }
+    60%      { transform: translateY(-1.5px); }
+    70%      { transform: translateY(-6px); }
+    80%      { transform: translateY(-5px); }
+    90%      { transform: translateY(0); }
+}
+@keyframes peep-grab {
+    0%   { transform: scale(1, 1); }
+    25%  { transform: scale(1.08, 0.92); }
+    50%  { transform: scale(0.94, 1.06); }
+    75%  { transform: scale(1.05, 0.95); }
+    100% { transform: scale(1, 1); }
+}
+#vday-app .no-taken-taker.runaway-off {
+    animation: stickfigure-runaway 28s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes stickfigure-runaway {
+    0%   { transform: translateX(0) translateY(0); }
+    12%  { transform: translateX(14vw) translateY(-5px); }
+    25%  { transform: translateX(28vw) translateY(0); }
+    37%  { transform: translateX(42vw) translateY(-5px); }
+    50%  { transform: translateX(56vw) translateY(0); }
+    62%  { transform: translateX(70vw) translateY(-5px); }
+    75%  { transform: translateX(84vw) translateY(0); }
+    87%  { transform: translateX(98vw) translateY(-5px); }
+    100% { transform: translateX(120vw) translateY(0); }
+}
+#vday-app .no-taken-msg {
+    margin-top: 16px;
+    font-size: clamp(1rem, 3vmin, 1.1rem);
+    color: #c41e5a;
+    font-weight: 800;
+    font-style: italic;
+    text-align: center;
+    animation: vdayFadeIn 0.5s ease;
+    line-height: 1.4;
+    padding: 0 4vw;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+@keyframes vdayFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Yes section on same page (index) — music keeps playing */
+#yes-app {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 100;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) calc(40px + env(safe-area-inset-bottom, 0)) env(safe-area-inset-left, 0);
+    background-color: #FFE4E8;
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #fff0f3 0%, transparent 60%);
+    visibility: visible;
+    opacity: 1;
+}
+#yes-app .hearts-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+#yes-app .hearts-bg::before,
+#yes-app .hearts-bg::after {
+    content: '💕 💗 💖 💝 💓';
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    animation: vdayFloatHearts 12s linear infinite;
+    white-space: nowrap;
+    top: 100%;
+    left: 10%;
+}
+#yes-app .hearts-bg::after {
+    animation-delay: 6s;
+    left: 60%;
+    content: '💗 💕 💓 💖 💝';
+}
+#yes-app .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: clamp(16px, 5vmin, 40px) clamp(12px, 4vw, 20px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    visibility: visible;
+    opacity: 1;
+}
+/* Keep Yes section children in flex flow (override main .container > div) */
+#yes-app .container > div,
+#yes-app .container > h1,
+#yes-app .container > p {
+    position: static;
+    left: auto;
+    right: auto;
+    top: auto;
+}
+#yes-app .yes-title {
+    order: 0;
+    font-size: clamp(1.2rem, 5vmin, 2.6rem);
+    color: #d63384;
+    font-weight: 900;
+    padding: 0 4vw;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    margin-bottom: clamp(16px, 4vmin, 24px);
+    visibility: visible;
+    opacity: 1;
+    display: block;
+}
+#yes-app .gif-container { order: 1; margin-bottom: clamp(12px, 3vmin, 24px); flex-shrink: 0; display: flex; justify-content: center; align-items: center; width: 100%; visibility: visible; opacity: 1; }
+#yes-app .yes-message {
+    order: 2;
+    margin-top: 0;
+    font-size: clamp(0.9rem, 2.6vmin, 1.35rem);
+    color: #e91e8c;
+    font-weight: 700;
+    padding: 0 4vw;
+    line-height: 1.4;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    visibility: visible;
+    opacity: 1;
+    display: block;
+}
+.poem-line-item {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    margin-bottom: 0.2em;
+}
+.poem-line-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.poem-line-spacer {
+    height: 0.8em;
+    margin-bottom: 0.4em;
+}
+#yes-app #yes-gif {
+    width: min(260px, 55vmin);
+    height: min(260px, 55vmin);
+    max-width: min(85vw, 100%);
+    max-height: 45vmin;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.15));
+    transition: opacity 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Yes section: mobile landscape — compact vertical */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #yes-app .container {
+        padding: clamp(8px, 2vmin, 20px) clamp(12px, 4vw, 24px);
+    }
+    #yes-app .yes-title {
+        font-size: clamp(1.15rem, 4vmin, 1.6rem);
+    }
+    #yes-app #yes-gif {
+        width: min(160px, 38vmin);
+        height: min(160px, 38vmin);
+        max-height: 32vh;
+    }
+    #yes-app .yes-message {
+        font-size: clamp(0.85rem, 2.4vmin, 1.1rem);
+        line-height: 1.5;
+    }
+}
+
+/* Yes section: mobile portrait — comfortable spacing, fit on screen */
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    #yes-app .container {
+        padding: clamp(16px, 5vmin, 40px) clamp(12px, 5vw, 20px);
+    }
+    #yes-app .yes-title {
+        font-size: clamp(1.1rem, 4.5vmin, 1.6rem);
+    }
+    #yes-app #yes-gif {
+        width: min(180px, 48vmin);
+        height: min(180px, 48vmin);
+        max-height: 40vmin;
+    }
+    #yes-app .yes-message {
+        font-size: clamp(0.85rem, 2.4vmin, 1.1rem);
+        line-height: 1.6;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    #vday-app h1 { font-size: clamp(1rem, 4vmin, 1.35rem); }
+    #vday-app #cat-gif {
+        width: min(120px, 32vmin);
+        height: min(120px, 32vmin);
+    }
+    #yes-app .yes-title { font-size: clamp(1rem, 4vmin, 1.3rem); }
+    #yes-app #yes-gif {
+        width: min(140px, 40vmin);
+        height: min(140px, 40vmin);
+    }
+    #yes-app .yes-message { font-size: clamp(0.8rem, 2.2vmin, 1rem); }
+}
+
+/* Yes page (yes.html) - full page styles when body has .yes-page */
+body.yes-page {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #FFE4E8;
+    font-family: 'Nunito', sans-serif;
+    background-image:
+        radial-gradient(circle at 15% 85%, #ffb3c1 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, #ff8fa3 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, #fff0f3 0%, transparent 60%);
+}
+
+body.yes-page .hearts-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+body.yes-page .hearts-bg::before,
+body.yes-page .hearts-bg::after {
+    content: '💕 💗 💖 💝 💓';
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.15;
+    animation: vdayFloatHearts 12s linear infinite;
+    white-space: nowrap;
+    top: 100%;
+    left: 10%;
+}
+
+body.yes-page .hearts-bg::after {
+    animation-delay: 6s;
+    left: 60%;
+    content: '💗 💕 💓 💖 💝';
+}
+
+body.yes-page .container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+}
+body.yes-page .container > div,
+body.yes-page .container > h1,
+body.yes-page .container > p {
+    position: static;
+    left: auto;
+    right: auto;
+    top: auto;
+}
+body.yes-page .yes-title { order: 0; }
+body.yes-page .gif-container { order: 1; }
+body.yes-page .yes-message { order: 2; }
+
+.yes-container h1.yes-title {
+    font-size: clamp(1.5rem, 5vmin, 2.8rem);
+    color: #d63384;
+    animation: bounceTitle 0.6s ease infinite alternate;
+}
+
+@keyframes bounceTitle {
+    from { transform: translateY(0) rotate(-1deg); }
+    to { transform: translateY(-12px) rotate(1deg); }
+}
+
+.yes-message {
+    font-size: clamp(0.95rem, 2.6vmin, 1.4rem);
+    color: #e91e8c;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 8px;
+    animation: fadeIn 1s ease 0.5s both;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.yes-container #cat-gif {
+    width: min(260px, 50vmin);
+    height: min(260px, 50vmin);
+}
+@media screen and (max-width: 768px) {
+    body.yes-page .container { padding: clamp(20px, 4vmin, 28px) clamp(12px, 4vw, 16px); }
+    .yes-container h1.yes-title { font-size: clamp(1.4rem, 4vmin, 2.2rem); }
+    .yes-container #cat-gif { width: min(200px, 45vmin); height: min(200px, 45vmin); }
+    .yes-message { font-size: clamp(1rem, 2.5vmin, 1.2rem); }
+}
+@media screen and (max-width: 500px) {
+    body.yes-page .container { padding: clamp(16px, 4vmin, 20px) 12px; }
+    .yes-container h1.yes-title { font-size: clamp(1.2rem, 4vmin, 1.75rem); }
+    .yes-container #cat-gif { width: min(160px, 42vmin); height: min(160px, 42vmin); }
+    .yes-message { font-size: clamp(0.95rem, 2.2vmin, 1.05rem); margin-top: 16px; }
+}
+@media screen and (max-width: 380px) {
+    .yes-container h1.yes-title { font-size: clamp(1.1rem, 3.5vmin, 1.5rem); }
+    .yes-container #cat-gif { width: min(130px, 38vmin); height: min(130px, 38vmin); }
+    .yes-message { font-size: clamp(0.9rem, 2.2vmin, 0.95rem); }
+}
+
+body.yes-page #music-toggle {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+    background: rgb(255, 255, 255);
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    z-index: 100;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+@media screen and (max-width: 768px) {
+    body.yes-page #music-toggle {
+        bottom: calc(50px + env(safe-area-inset-bottom, 0));
+        right: calc(10px + env(safe-area-inset-right, 0));
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    body.yes-page #music-toggle {
+        bottom: calc(48px + env(safe-area-inset-bottom, 0));
+        right: calc(8px + env(safe-area-inset-right, 0));
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+@media screen and (orientation: portrait) and (max-width: 500px) {
+    body.yes-page #music-toggle {
+        bottom: calc(50px + env(safe-area-inset-bottom, 0));
+        right: calc(6px + env(safe-area-inset-right, 0));
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
+    }
+}
+
+/* iPhone specific (SE, 12, 13, 14, 15 Pro Max, etc.) */
+@media screen and (orientation: portrait) and (max-width: 430px) and (max-height: 932px) {
+    body.yes-page #music-toggle {
+        bottom: calc(52px + env(safe-area-inset-bottom, 0));
+        right: 6px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Android phones (various sizes) - included in combined rule above */
